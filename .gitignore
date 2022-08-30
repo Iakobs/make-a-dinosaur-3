@@ -1,0 +1,15 @@
+# Import cache
+.import/
+
+# Binaries
+bin/
+build/
+lib/
+
+# Misc
+*.translation
+export_presets.cfg
+.mono/
+
+# Releases
+releases/
