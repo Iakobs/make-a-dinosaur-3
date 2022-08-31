@@ -167,4 +167,7 @@ skeleton = NodePath("../..")
 
 [node name="GummyTween" type="Tween" parent="."]
 
+[node name="AlphaTween" type="Tween" parent="."]
+
 [connection signal="tween_completed" from="GummyTween" to="." method="_on_GummyTween_tween_completed"]
+[connection signal="tween_completed" from="AlphaTween" to="." method="_on_GummyTween_tween_completed"]

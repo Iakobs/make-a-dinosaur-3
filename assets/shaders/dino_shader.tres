@@ -4,7 +4,7 @@
 code = "// NOTE: Shader automatically converted from Godot Engine 3.5.stable's SpatialMaterial.
 
 shader_type spatial;
-render_mode async_visible,blend_mix,depth_draw_opaque,cull_disabled,diffuse_burley,specular_schlick_ggx;
+render_mode async_visible,blend_mix,depth_draw_always,cull_disabled,diffuse_burley,specular_schlick_ggx;
 uniform vec4 albedo : hint_color;
 uniform sampler2D texture_albedo : hint_albedo;
 uniform float specular;
@@ -17,11 +17,20 @@ uniform vec3 uv1_scale;
 uniform vec3 uv1_offset;
 uniform vec3 uv2_scale;
 uniform vec3 uv2_offset;
-uniform float gumminess;
+uniform float gumminess = 0.0;
+uniform float alpha = 1.0;
 
 
 void vertex() {
 	UV=UV*uv1_scale.xy+uv1_offset.xy;
+	
+	float float_x = step(cos(TIME) * VERTEX.x / 100.0, 1.0);
+	float float_y = step(cos(TIME) * VERTEX.y / 100.0, 1.0);
+	float float_z = step(cos(TIME) * VERTEX.z / 100.0, 1.0);
+	
+	VERTEX = vec3(VERTEX.x * max(1.0, float_x),
+				  VERTEX.y * max(1.0, float_y),
+				  VERTEX.z * max(1.0, float_z));
 }
 
 
@@ -29,13 +38,18 @@ void vertex() {
 
 void fragment() {
 	vec2 base_uv = UV;
-	vec4 albedo_tex = texture(texture_albedo,base_uv);
+	vec4 albedo_tex = texture(texture_albedo, base_uv);
 	albedo_tex *= COLOR;
-	ALBEDO = albedo.rgb * albedo_tex.rgb * gumminess;
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
 	METALLIC = metallic;
-	ROUGHNESS = roughness;
+	ROUGHNESS = roughness * alpha;
 	SPECULAR = specular;
 	NORMALMAP = texture(texture_normal,base_uv).rgb;
 	NORMALMAP_DEPTH = normal_scale;
+	
+	SSS_STRENGTH = 1.064;
+	TRANSMISSION = vec3(1.0);
+	EMISSION = vec3(gumminess / 10.0);
+	ALPHA = alpha;
 }
 "
