@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+
+[ext_resource path="res://assets/textures/pippermint_body_normals.png" type="Texture" id=1]
+[ext_resource path="res://assets/shaders/glass_shader.tres" type="Shader" id=2]
+
+[resource]
+shader = ExtResource( 2 )
+shader_param/distortion_size = 0.1
+shader_param/glass = ExtResource( 1 )
