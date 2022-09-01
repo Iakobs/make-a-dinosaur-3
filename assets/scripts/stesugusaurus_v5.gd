@@ -19,6 +19,6 @@ func _input(event):
 		change_material()
 
 
-func _on_animation_finished(anim_name):
+func _on_animation_finished(_anim_name):
 	$peppermint_body.set_surface_material(0, destination)
 	is_original = false
