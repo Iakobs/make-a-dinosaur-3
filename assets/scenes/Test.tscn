@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/scenes/stesugusaurus_v5.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/scripts/camera_control.gd" type="Script" id=2]
 [ext_resource path="res://assets/scenes/gui.tscn" type="PackedScene" id=3]
-[ext_resource path="res://assets/alps_field_1k.exr" type="Texture" id=4]
+[ext_resource path="res://assets/hdri/lilienstein_1k.exr" type="Texture" id=4]
 [ext_resource path="res://assets/scenes/ground.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/src/stesugusaurus_v5/peppermint_candy_001.material" type="Material" id=6]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 4 )
@@ -20,17 +21,20 @@ glow_enabled = true
 [node name="Spatial" type="Spatial"]
 
 [node name="stesugusaurus_v5" parent="." instance=ExtResource( 1 )]
+origin = ExtResource( 6 )
 
 [node name="camera_pivot" type="Spatial" parent="stesugusaurus_v5"]
 
 [node name="camera" type="Camera" parent="stesugusaurus_v5/camera_pivot"]
 transform = Transform( 0.375577, 0, 0.926791, 0, 1, 0, -0.926791, 0, 0.375577, 3, 1.87176, 2 )
 script = ExtResource( 2 )
-sensitivity = 0.27
-smoothness = 0.403
-max_speed = Vector3( 2, 2, 2 )
+sensitivity = 0.19
+smoothness = 0.306
+max_speed = Vector3( 3.5, 3.5, 3.5 )
 
 [node name="Control" parent="." instance=ExtResource( 3 )]
+visible = false
+mouse_filter = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 2 )

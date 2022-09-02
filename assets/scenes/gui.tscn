@@ -16,7 +16,7 @@ margin_top = 20.0
 margin_right = 993.0
 margin_bottom = 102.0
 custom_fonts/font = SubResource( 1 )
-text = "Feu servir W,A,S,D per moure la càmera, Q,E per pujar o baixar i el ratolí per moure la panoràmica. ESC obre el menú de la càmera."
+text = "Feu servir W,A,S,D per moure la càmera, Q,E per pujar o baixar i el ratolí per moure la panoràmica. ESC obre i tanca el menú de la càmera."
 autowrap = true
 
 [node name="Label2" type="Label" parent="."]

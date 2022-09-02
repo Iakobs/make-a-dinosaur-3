@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/alps_field_1k.exr-cda7fb3243d315226aeac84c221102f6.stex"
+path="res://.import/screenshot_003.png-782042eab9595a0f748d9377ea707764.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/alps_field_1k.exr"
-dest_files=[ "res://.import/alps_field_1k.exr-cda7fb3243d315226aeac84c221102f6.stex" ]
+source_file="res://screenshots/screenshot_003.png"
+dest_files=[ "res://.import/screenshot_003.png-782042eab9595a0f748d9377ea707764.stex" ]
 
 [params]
 
