@@ -21,27 +21,63 @@ uniform float gumminess = 0.0;
 uniform float alpha = 1.0;
 
 
-void vertex() {
-	UV=UV*uv1_scale.xy+uv1_offset.xy;
-	
-	float float_x = step(cos(TIME) * VERTEX.x / 100.0, 1.0);
-	float float_y = step(cos(TIME) * VERTEX.y / 100.0, 1.0);
-	float float_z = step(cos(TIME) * VERTEX.z / 100.0, 1.0);
-	
-	VERTEX = vec3(VERTEX.x * max(1.0, float_x),
-				  VERTEX.y * max(1.0, float_y),
-				  VERTEX.z * max(1.0, float_z));
+/// mod289, perm and noise methods by patriciogonzalezvivo
+// https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
+
+vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
+vec4 perm(vec4 x){return mod289(((x * 34.0) + 1.0) * x);}
+
+float noise(vec3 p){
+    vec3 a = floor(p);
+    vec3 d = p - a;
+    d = d * d * (3.0 - 2.0 * d);
+
+    vec4 b = a.xxyy + vec4(0.0, 1.0, 0.0, 1.0);
+    vec4 k1 = perm(b.xyxy);
+    vec4 k2 = perm(k1.xyxy + b.zzww);
+
+    vec4 c = k2 + a.zzzz;
+    vec4 k3 = perm(c);
+    vec4 k4 = perm(c + 1.0);
+
+    vec4 o1 = fract(k3 * (1.0 / 41.0));
+    vec4 o2 = fract(k4 * (1.0 / 41.0));
+
+    vec4 o3 = o2 * d.z + o1 * (1.0 - d.z);
+    vec2 o4 = o3.yw * d.x + o3.xz * (1.0 - d.x);
+
+    return o4.y * d.y + o4.x * (1.0 - d.y);
 }
 
 
-
+void vertex() {
+	UV=UV*uv1_scale.xy+uv1_offset.xy;
+	
+    vec2 st = UV.xy;
+	
+    vec2 pos = vec2(st*1.003 * (cos(TIME) + 2.0));
+	float n = noise(VERTEX * sin(TIME * 0.4));
+	
+    vec2 pos2 = vec2(st*1.005 * (sin(TIME) + 2.0));
+	float n2 = noise(VERTEX * sin(TIME * 0.42));
+	
+    vec2 pos3 = vec2(st*1.009 * (cos(TIME) + 2.0));
+	float n3 = noise(VERTEX * sin(TIME * 0.41));
+	
+	VERTEX = vec3(VERTEX.x + (gumminess * n / 30.0),
+				  VERTEX.y + (gumminess * n2 / 30.0),
+				  VERTEX.z + (gumminess * n3 / 30.0));
+}
 
 void fragment() {
 	vec2 base_uv = UV;
 	vec4 albedo_tex = texture(texture_albedo, base_uv);
-	albedo_tex *= COLOR;
+	albedo_tex *= vec4(COLOR.r * max(gumminess * 6.0, 1.0),
+					   COLOR.g * max(gumminess * 2.0, 1.0),
+					   COLOR.b * max(gumminess * 2.0, 1.0),
+					   COLOR.a);
 	ALBEDO = albedo.rgb * albedo_tex.rgb;
-	METALLIC = metallic;
+	METALLIC = metallic * alpha;
 	ROUGHNESS = roughness * alpha;
 	SPECULAR = specular;
 	NORMALMAP = texture(texture_normal,base_uv).rgb;
@@ -49,7 +85,7 @@ void fragment() {
 	
 	SSS_STRENGTH = 1.064;
 	TRANSMISSION = vec3(1.0);
-	EMISSION = vec3(gumminess / 10.0);
+	EMISSION = vec3(gumminess / 5.0);
 	ALPHA = alpha;
 }
 "

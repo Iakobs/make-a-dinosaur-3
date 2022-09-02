@@ -2,7 +2,7 @@ extends Spatial
 
 const GUMMY_MIN_VALUE: float = 0.0
 const GUMMY_MAX_VALUE: float = 1.0
-const ALPHA_MIN_VALUE: float = 0.8
+const ALPHA_MIN_VALUE: float = 0.2
 const ALPHA_MAX_VALUE: float = 1.0
 
 export var gumminess: float = 0.0
