@@ -1,0 +1,45 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/hdri/lilienstein_1k.exr" type="Texture" id=1]
+[ext_resource path="res://assets/src/stesugusaurus_v5/peppermint_candy_001.material" type="Material" id=2]
+[ext_resource path="res://assets/scenes/gui.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/scenes/ground.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/scenes/stesugusaurus_v5.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/scripts/camera_control.gd" type="Script" id=6]
+
+[sub_resource type="PanoramaSky" id=1]
+panorama = ExtResource( 1 )
+
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
+ss_reflections_enabled = true
+ssao_enabled = true
+dof_blur_far_distance = 21.77
+glow_enabled = true
+
+[node name="Spatial" type="Spatial"]
+
+[node name="stesugusaurus_v5" parent="." instance=ExtResource( 5 )]
+origin = ExtResource( 2 )
+
+[node name="camera_pivot" type="Spatial" parent="stesugusaurus_v5"]
+
+[node name="camera" type="Camera" parent="stesugusaurus_v5/camera_pivot"]
+transform = Transform( 0.375577, 0, 0.926791, 0, 1, 0, -0.926791, 0, 0.375577, 3, 1.87176, 2 )
+script = ExtResource( 6 )
+sensitivity = 0.19
+smoothness = 0.306
+max_speed = Vector3( 3.5, 3.5, 3.5 )
+
+[node name="Control" parent="." instance=ExtResource( 3 )]
+mouse_filter = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+
+[node name="ground" parent="." instance=ExtResource( 4 )]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.623141, 0.432321, -0.651762, 0.00768436, 0.829914, 0.557839, 0.782072, -0.35262, 0.513831, -11.2523, 5.04754, 7.35257 )
+shadow_enabled = true
